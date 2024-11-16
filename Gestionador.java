@@ -13,6 +13,17 @@ public class Gestionador implements ClaseA {
     private boolean enLlamada = false;
     private boolean telefonoConectado = false;
 
+    ArrayList<Contacto> contacto=new ArrayList<>();
+    Contacto contacto1= new Contacto("Manuel", "19283743");
+    Contacto contacto2= new Contacto("Samuel", "92742812");
+    Contacto contacto3= new Contacto("Raul", "29741014");
+
+    public void agregarContacto(){
+        contacto.add(contacto1);
+        contacto.add(contacto2);
+        contacto.add(contacto3);
+    }
+
     public void encender() {
         if (!encendido) {
             encendido = true;
@@ -148,6 +159,7 @@ public class Gestionador implements ClaseA {
     public void mostrarContactos() {
         if (encendido && telefonoConectado) {
             System.out.println("Mostrando contactos...");
+
         } else {
             System.out.println("No se pueden mostrar contactos. Asegúrese de que el radio esté encendido y un teléfono esté conectado.");
         }
