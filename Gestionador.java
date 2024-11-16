@@ -11,6 +11,7 @@ public class Gestionador implements ClaseA {
     private HashMap<String, Cancion> playlistActual = new HashMap<>();
     private Contacto ultimoContactoLlamado = null;
     private boolean telefonoConectado = false;
+    ArrayList<PlanificadorViajes>viajes=new ArrayList<>();
 
     Contacto contacto1= new Contacto("Manuel", "19283743");
     Contacto contacto2= new Contacto("Samuel", "92742812");
@@ -194,8 +195,11 @@ public class Gestionador implements ClaseA {
         }
     }
 
+    @Override
     public String planificarViajes(Date inicio, Date fin, String lugarInicio, String lugarFinal) {
         if (encendido) {
+            PlanificadorViajes viaje = new PlanificadorViajes(inicio, fin, lugarInicio, lugarFinal);
+            viajes.add(viaje);
             return "Viaje planificado desde " + lugarInicio + " hasta " + lugarFinal + " desde el " + inicio.toString() + " hasta el " + fin.toString();
         } else {
             return "No se puede planificar viajes. El radio está apagado.";

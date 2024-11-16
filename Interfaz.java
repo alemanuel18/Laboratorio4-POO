@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Interfaz {
@@ -39,7 +41,7 @@ public class Interfaz {
                     gestionTelefono();
                     break;
                 case 8:
-                    System.out.println("Saliendo del sistema...");
+                    planificarViajes();
                     break;
                 default:
                     System.out.println("Opción inválida. Por favor, intente de nuevo.");
@@ -155,11 +157,47 @@ public class Interfaz {
     }
 
     private static void planificarViajes() {
-        System.out.println("Planificando un viaje...");
-        System.out.print("Ingrese lugar de inicio del viaje: ");
-        String lugarInicio = scanner.nextLine();
-        System.out.print("Ingrese lugar de destino del viaje: ");
-        String lugarFinal = scanner.nextLine();
-        gestionador.planificarViajes(new Date(), new Date(), lugarInicio, lugarFinal);
+    System.out.println("Planificando un viaje...");
+    System.out.print("Ingrese lugar de inicio del viaje: ");
+    String lugarInicio = scanner.nextLine();
+    System.out.print("Ingrese lugar de destino del viaje: ");
+    String lugarFinal = scanner.nextLine();
+
+    Date fechaInicio = null;
+    Date fechaFin = null;
+
+    while (fechaInicio == null) {
+        System.out.print("Ingrese la fecha de inicio del viaje (dd/MM/yyyy): ");
+        String fechaInicioInput = scanner.nextLine();
+        fechaInicio = parsearFecha(fechaInicioInput);
+        if (fechaInicio == null) {
+            System.out.println("Fecha de inicio inválida. Por favor, intente nuevamente.");
+        }
     }
+
+    while (fechaFin == null) {
+        System.out.print("Ingrese la fecha de fin del viaje (dd/MM/yyyy): ");
+        String fechaFinInput = scanner.nextLine();
+        fechaFin = parsearFecha(fechaFinInput);
+        if (fechaFin == null) {
+            System.out.println("Fecha de fin inválida. Por favor, intente nuevamente.");
+        } else if (!fechaFin.after(fechaInicio)) {
+            System.out.println("La fecha de fin debe ser posterior a la fecha de inicio. Intente nuevamente.");
+            fechaFin = null; // Reinicia la entrada
+        }
+    }
+
+    System.out.println(gestionador.planificarViajes(fechaInicio, fechaFin, lugarInicio, lugarFinal));
+}
+
+private static Date parsearFecha(String fechaInput) {
+    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    formatoFecha.setLenient(false); // Desactiva el modo permisivo para validar correctamente
+    try {
+        return formatoFecha.parse(fechaInput);
+    } catch (ParseException e) {
+        return null; // Si ocurre un error, devuelve null
+    }
+}
+
 }
