@@ -1,9 +1,12 @@
 import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Interfaz {
     private static Gestionador gestionador = new Gestionador();
     private static Scanner scanner = new Scanner(System.in);
+    
 
     public static void main(String[] args) {
         int opcion;
@@ -38,7 +41,7 @@ public class Interfaz {
                     gestionTelefono();
                     break;
                 case 8:
-                    System.out.println("Saliendo del sistema...");
+                    planificarViajes();
                     break;
                 default:
                     System.out.println("Opción inválida. Por favor, intente de nuevo.");
@@ -57,14 +60,11 @@ public class Interfaz {
             System.out.println("5. Modo Radio");
             System.out.println("6. Modo Reproducción");
             System.out.println("7. Modo Teléfono");
-            if (gestionador.isEnLlamada()) {
-                System.out.println("9. Finalizar Llamada");
-            }
-            System.out.println("10. Planificar Viajes");
+            System.out.println("8. Planificar Viajes");
         } else {
             System.out.println("1. Encender Radio");
         }
-        System.out.println("8. Salir");
+        System.out.println("9. Salir");
         System.out.print("Seleccione una opción: ");
     }
 
@@ -81,6 +81,7 @@ public class Interfaz {
     }
 
     private static void gestionTelefono() {
+        boolean cambio=true;
         System.out.println("Entrando al modo teléfono...");
         if (!gestionador.isTelefonoConectado()) {
             System.out.print("¿Desea conectar un teléfono? (s/n): ");
@@ -91,7 +92,7 @@ public class Interfaz {
                 gestionador.conectarTelefono(dispositivo);
             }
         } else {
-            System.out.print("Ingrese la acción (desconectar, mostrar contactos, llamar, colgar, speaker): ");
+            System.out.print("Ingrese la acción (desconectar, mostrar contactos, llamar, speaker): ");
             String accion = scanner.nextLine();
             switch (accion) {
                 case "desconectar":
@@ -104,16 +105,20 @@ public class Interfaz {
                     System.out.print("Ingrese el nombre del contacto: ");
                     String nombre = scanner.nextLine();
                     gestionador.llamarContacto(nombre);
-                    break;
-                case "colgar":
-                    if (gestionador.isEnLlamada()) {
+                    int conlgar=menu8();
+                    while (conlgar==2) {
                         gestionador.finalizarLlamada();
-                    } else {
-                        System.out.println("No hay una llamada para colgar.");
+                        conlgar=menu8();
                     }
                     break;
                 case "speaker":
-                    gestionador.cambiarSpeaker();
+                if (cambio) {
+                    System.out.println("Se camnbio a auriculares");
+                    gestionador.cambiar(cambio);
+                }else{
+                    System.out.println("Se cambio a Speakers");
+                    gestionador.cambiar(cambio);
+                }
                     break;
                 default:
                     System.out.println("Acción no reconocida.");
@@ -122,12 +127,77 @@ public class Interfaz {
         }
     }
 
-    private static void planificarViajes() {
-        System.out.println("Planificando un viaje...");
-        System.out.print("Ingrese lugar de inicio del viaje: ");
-        String lugarInicio = scanner.nextLine();
-        System.out.print("Ingrese lugar de destino del viaje: ");
-        String lugarFinal = scanner.nextLine();
-        gestionador.planificarViajes(new Date(), new Date(), lugarInicio, lugarFinal);
+    public static int menu8(){
+        //Se inicializan las variables
+        //Se crean los objetos
+
+        Scanner teclado=new Scanner(System.in);
+        String eleccionUsuarioS="";
+        int eleccionUsuarioi=0;
+        boolean verificador=false;
+        
+
+        while (verificador==false) {
+            System.out.println("\nMenu\n¿Desea colgar la llamada?\n1. Si\n2. No");
+            eleccionUsuarioS=teclado.nextLine();
+
+            try { 
+                eleccionUsuarioi=Integer.parseInt(eleccionUsuarioS);
+                if(eleccionUsuarioi<1 ||eleccionUsuarioi>2){
+                    System.out.println("Ingrese una de las opciones del menu");
+                }else
+                verificador=true;
+                
+            } catch (Exception e) {
+                System.out.println("Ingrese un numero entero");
+            } 
+        }
+        return eleccionUsuarioi;
+
     }
+
+    private static void planificarViajes() {
+    System.out.println("Planificando un viaje...");
+    System.out.print("Ingrese lugar de inicio del viaje: ");
+    String lugarInicio = scanner.nextLine();
+    System.out.print("Ingrese lugar de destino del viaje: ");
+    String lugarFinal = scanner.nextLine();
+
+    Date fechaInicio = null;
+    Date fechaFin = null;
+
+    while (fechaInicio == null) {
+        System.out.print("Ingrese la fecha de inicio del viaje (dd/MM/yyyy): ");
+        String fechaInicioInput = scanner.nextLine();
+        fechaInicio = parsearFecha(fechaInicioInput);
+        if (fechaInicio == null) {
+            System.out.println("Fecha de inicio inválida. Por favor, intente nuevamente.");
+        }
+    }
+
+    while (fechaFin == null) {
+        System.out.print("Ingrese la fecha de fin del viaje (dd/MM/yyyy): ");
+        String fechaFinInput = scanner.nextLine();
+        fechaFin = parsearFecha(fechaFinInput);
+        if (fechaFin == null) {
+            System.out.println("Fecha de fin inválida. Por favor, intente nuevamente.");
+        } else if (!fechaFin.after(fechaInicio)) {
+            System.out.println("La fecha de fin debe ser posterior a la fecha de inicio. Intente nuevamente.");
+            fechaFin = null; // Reinicia la entrada
+        }
+    }
+
+    System.out.println(gestionador.planificarViajes(fechaInicio, fechaFin, lugarInicio, lugarFinal));
+}
+
+private static Date parsearFecha(String fechaInput) {
+    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    formatoFecha.setLenient(false); // Desactiva el modo permisivo para validar correctamente
+    try {
+        return formatoFecha.parse(fechaInput);
+    } catch (ParseException e) {
+        return null; // Si ocurre un error, devuelve null
+    }
+}
+
 }
