@@ -4,6 +4,7 @@ import java.util.Date;
 public class Interfaz {
     private static Gestionador gestionador = new Gestionador();
     private static Scanner scanner = new Scanner(System.in);
+    
 
     public static void main(String[] args) {
         int opcion;
@@ -57,14 +58,11 @@ public class Interfaz {
             System.out.println("5. Modo Radio");
             System.out.println("6. Modo Reproducción");
             System.out.println("7. Modo Teléfono");
-            if (gestionador.isEnLlamada()) {
-                System.out.println("9. Finalizar Llamada");
-            }
-            System.out.println("10. Planificar Viajes");
+            System.out.println("8. Planificar Viajes");
         } else {
             System.out.println("1. Encender Radio");
         }
-        System.out.println("8. Salir");
+        System.out.println("9. Salir");
         System.out.print("Seleccione una opción: ");
     }
 
@@ -81,6 +79,7 @@ public class Interfaz {
     }
 
     private static void gestionTelefono() {
+        boolean cambio=true;
         System.out.println("Entrando al modo teléfono...");
         if (!gestionador.isTelefonoConectado()) {
             System.out.print("¿Desea conectar un teléfono? (s/n): ");
@@ -91,7 +90,7 @@ public class Interfaz {
                 gestionador.conectarTelefono(dispositivo);
             }
         } else {
-            System.out.print("Ingrese la acción (desconectar, mostrar contactos, llamar, colgar, speaker): ");
+            System.out.print("Ingrese la acción (desconectar, mostrar contactos, llamar, speaker): ");
             String accion = scanner.nextLine();
             switch (accion) {
                 case "desconectar":
@@ -104,22 +103,55 @@ public class Interfaz {
                     System.out.print("Ingrese el nombre del contacto: ");
                     String nombre = scanner.nextLine();
                     gestionador.llamarContacto(nombre);
-                    break;
-                case "colgar":
-                    if (gestionador.isEnLlamada()) {
+                    int conlgar=menu8();
+                    while (conlgar==2) {
                         gestionador.finalizarLlamada();
-                    } else {
-                        System.out.println("No hay una llamada para colgar.");
+                        conlgar=menu8();
                     }
                     break;
                 case "speaker":
-                    gestionador.cambiarSpeaker();
+                if (cambio) {
+                    System.out.println("Se camnbio a auriculares");
+                    gestionador.cambiar(cambio);
+                }else{
+                    System.out.println("Se cambio a Speakers");
+                    gestionador.cambiar(cambio);
+                }
                     break;
                 default:
                     System.out.println("Acción no reconocida.");
                     break;
             }
         }
+    }
+
+    public static int menu8(){
+        //Se inicializan las variables
+        //Se crean los objetos
+
+        Scanner teclado=new Scanner(System.in);
+        String eleccionUsuarioS="";
+        int eleccionUsuarioi=0;
+        boolean verificador=false;
+        
+
+        while (verificador==false) {
+            System.out.println("\nMenu\n¿Desea colgar la llamada?\n1. Si\n2. No");
+            eleccionUsuarioS=teclado.nextLine();
+
+            try { 
+                eleccionUsuarioi=Integer.parseInt(eleccionUsuarioS);
+                if(eleccionUsuarioi<1 ||eleccionUsuarioi>2){
+                    System.out.println("Ingrese una de las opciones del menu");
+                }else
+                verificador=true;
+                
+            } catch (Exception e) {
+                System.out.println("Ingrese un numero entero");
+            } 
+        }
+        return eleccionUsuarioi;
+
     }
 
     private static void planificarViajes() {

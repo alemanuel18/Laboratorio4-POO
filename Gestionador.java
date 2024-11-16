@@ -10,8 +10,20 @@ public class Gestionador implements ClaseA {
     private ArrayList<Double> emisorasGuardadas = new ArrayList<>();
     private HashMap<String, Cancion> playlistActual = new HashMap<>();
     private Contacto ultimoContactoLlamado = null;
-    private boolean enLlamada = false;
     private boolean telefonoConectado = false;
+
+    Contacto contacto1= new Contacto("Manuel", "19283743");
+    Contacto contacto2= new Contacto("Samuel", "92742812");
+    Contacto contacto3= new Contacto("Raul", "29741014");
+
+    ArrayList<Contacto> contacto=new ArrayList<>();
+
+    public void agregarContacto(){
+        contacto.add(contacto1);
+        contacto.add(contacto2);
+        contacto.add(contacto3);
+    }
+
 
     public String encender() {
         if (!encendido) {
@@ -25,7 +37,6 @@ public class Gestionador implements ClaseA {
     public String apagar() {
         if (encendido) {
             encendido = false;
-            enLlamada = false;
             telefonoConectado = false;
             return "Radio apagado.";
         } else {
@@ -140,7 +151,7 @@ public class Gestionador implements ClaseA {
 
     public String mostrarContactos() {
         if (encendido && telefonoConectado) {
-            return"Mostrando contactos...";
+            return"Mostrando contactos...\n1."+contacto1+"\n2."+contacto2+"\n3."+contacto3;
         } else {
             return "No se pueden mostrar contactos. Asegúrese de que el radio esté encendido y un teléfono esté conectado.";
         }
@@ -148,35 +159,37 @@ public class Gestionador implements ClaseA {
 
     public String llamarContacto(String nombre) {
         if (encendido && telefonoConectado) {
-            ultimoContactoLlamado = new Contacto(nombre, "1234567890");
-            enLlamada = true;
-            return "Llamando a " + nombre + "...";
+            // Recorrer la lista de contactos para verificar si existe
+            for (Contacto contacto : contacto) {
+                if (contacto.getNombre().equalsIgnoreCase(nombre)) {
+                    ultimoContactoLlamado = contacto;
+                    return "Llamando a " + nombre + "...";
+                }
+            }
+            return "El contacto '" + nombre + "' no existe en la lista de contactos.";
         } else {
             return "No se puede realizar la llamada. Asegúrese de que el radio esté encendido y el teléfono esté conectado.";
         }
     }
+    
 
     public String finalizarLlamada() {
-        if (encendido && enLlamada) {
-            enLlamada = false;
+        if (encendido) {
             return "Llamada finalizada.";
         } else {
             return "No hay llamada activa o el radio está apagado.";
         }
     }
 
-    public String cambiarSpeaker() {
-        if (encendido && telefonoConectado) {
-            return "Cambiado a speaker.";
-        } else {
-            return "No se puede cambiar a speaker. Asegúrese de que el radio esté encendido y un teléfono esté conectado.";
-        }
-    }
 
+    @Override
     public String cambiar(boolean sonido) {
-        if (encendido) {
-            return "Sonido " + (sonido ? "encendido" : "apagado");
-        } else {
+        if (encendido && sonido) {
+            return "Se camnio a auriculares";
+        }else if (encendido && sonido) {
+            return "Se cambio a spekers";   
+        }
+        else {
             return "No se puede cambiar el estado del sonido. El radio está apagado.";
         }
     }
@@ -188,22 +201,11 @@ public class Gestionador implements ClaseA {
             return "No se puede planificar viajes. El radio está apagado.";
         }
     }
-    public String llamarUltimoContacto() {
-        if (encendido && ultimoContactoLlamado != null) {
-            enLlamada = true;
-            return "Llamando al último contacto: " + ultimoContactoLlamado.getNombre();
-        } else {
-            return "No hay último contacto registrado o el radio está apagado.";
-        }
-    }
 
     public boolean isEncendido() {
         return encendido;
     }
 
-    public boolean isEnLlamada() {
-        return enLlamada;
-    }
 
     public boolean isTelefonoConectado() {
         return telefonoConectado;
