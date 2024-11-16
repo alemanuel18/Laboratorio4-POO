@@ -71,13 +71,26 @@ public class Gestionador implements ClaseA {
 
     @Override
     public String cambiarEstacion(double incremento) {
-        if (encendido) {
-            estacionActual += incremento;
-            return "Estación cambiada a " + estacionActual + " " + modo;
-        } else {
-            return "No se puede cambiar la estación. El radio está apagado.";
+        if (!encendido) {
+            return "El radio está apagado. Encienda el radio para cambiar la emisora.";
         }
+    
+        if (modo.equals("FM")) {
+            if (estacionActual + incremento >= 87.0 && estacionActual + incremento <= 102.5) {
+                estacionActual += incremento;
+            } else {
+                return "Estación fuera de rango en FM, el rango es 87.0 - 102.5.";
+            }
+        } else if (modo.equals("AM")) {
+            if (estacionActual + incremento >= 520 && estacionActual + incremento <= 1500) {
+                estacionActual += incremento;
+            } else {
+                return "Estación fuera de rango en AM, el rango es de 520 - 1500.";
+            }
+        }
+        return "Estación cambiada a " + estacionActual + " " + modo;
     }
+    
 
     @Override
     public String guardarEmisora(double frecuencia) {
