@@ -109,16 +109,25 @@ public class Gestionador implements ClaseA {
         return "Emisora " + frecuencia + " guardada exitosamente.";
     }
     
-
     @Override
     public double cargarEmisora(int posicion) {
-        if (encendido && posicion >= 1 && posicion <= emisorasGuardadas.size()) {
-            double frecuencia = emisorasGuardadas.get(posicion - 1);
-            return frecuencia;
-        } else {
+        if (!encendido) {
+            System.out.println("El radio está apagado. Encienda el radio para cargar una emisora.");
             return -1;
         }
+        if (emisorasGuardadas.isEmpty()){
+            System.out.println("No hay emisoras guardadas.");
+            return -1;
+        }
+        if (posicion < 1 || posicion > emisorasGuardadas.size()){
+            System.out.println("Posición inválida. Seleccione un número entre 1 y " + emisorasGuardadas.size() + ".");
+            return -1;
+        }
+        estacionActual = emisorasGuardadas.get(posicion - 1);
+        System.out.println("Emisora cargada: " + estacionActual + " " + modo);
+        return estacionActual;
     }
+    
 
     @Override
     public String seleccionarListaReproduccion(String lista) {
