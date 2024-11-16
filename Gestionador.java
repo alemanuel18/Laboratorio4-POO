@@ -13,8 +13,7 @@ public class Gestionador implements ClaseA {
     private boolean enLlamada = false;
     private boolean telefonoConectado = false;
 
-    @Override
-    public void encender() {
+    public String encender() {
         if (!encendido) {
             encendido = true;
             return "Radio encendido.";
@@ -23,8 +22,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void apagar() {
+    public String apagar() {
         if (encendido) {
             encendido = false;
             enLlamada = false;
@@ -35,8 +33,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void subirVolumen() {
+    public String subirVolumen() {
         if (encendido && volumen < 100) {
             volumen++;
             return "Volumen aumentado a: " + volumen;
@@ -47,8 +44,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void bajarVolumen() {
+    public String bajarVolumen() {
         if (encendido && volumen > 0) {
             volumen--;
             return "Volumen disminuido a: " + volumen;
@@ -59,8 +55,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void cambiarAMFM() {
+    public String cambiarAMFM() {
         if (encendido) {
             modo = modo.equals("FM") ? "AM" : "FM";
             return "Modo cambiado a " + modo;
@@ -69,8 +64,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void cambiarEstacion(double incremento) {
+    public String cambiarEstacion(double incremento) {
         if (encendido) {
             estacionActual += incremento;
             return "Estación cambiada a " + estacionActual + " " + modo;
@@ -79,8 +73,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void guardarEmisora(double frecuencia) {
+    public String guardarEmisora(double frecuencia) {
         if (encendido) {
             if (emisorasGuardadas.size() < 50) {
                 emisorasGuardadas.add(frecuencia);
@@ -103,8 +96,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void seleccionarListaReproduccion(String lista) {
+    public String seleccionarListaReproduccion(String lista) {
         if (encendido) {
             return "Lista de reproducción '" + lista + "' seleccionada.";
         } else {
@@ -112,8 +104,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void cambiarCancion(String direccion) {
+    public String cambiarCancion(String direccion) {
         if (encendido) {
             return "Canción " + (direccion.equals("adelante") ? "siguiente" : "anterior") + " seleccionada.";
         } else {
@@ -121,8 +112,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void escucharCancion() {
+    public String escucharCancion() {
         if (encendido) {
             return "Escuchando canción...";
         } else {
@@ -130,8 +120,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void conectarTelefono(String dispositivo) {
+    public String conectarTelefono(String dispositivo) {
         if (encendido) {
             telefonoConectado = true;
             return "Teléfono " + dispositivo + " conectado.";
@@ -140,8 +129,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void desconectarTelefono() {
+    public String desconectarTelefono() {
         if (encendido && telefonoConectado) {
             telefonoConectado = false;
             return "Teléfono desconectado.";
@@ -150,17 +138,15 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void mostrarContactos() {
+    public String mostrarContactos() {
         if (encendido && telefonoConectado) {
-            System.out.println("Mostrando contactos...");
+            return"Mostrando contactos...";
         } else {
             return "No se pueden mostrar contactos. Asegúrese de que el radio esté encendido y un teléfono esté conectado.";
         }
     }
 
-    @Override
-    public void llamarContacto(String nombre) {
+    public String llamarContacto(String nombre) {
         if (encendido && telefonoConectado) {
             ultimoContactoLlamado = new Contacto(nombre, "1234567890");
             enLlamada = true;
@@ -170,8 +156,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void finalizarLlamada() {
+    public String finalizarLlamada() {
         if (encendido && enLlamada) {
             enLlamada = false;
             return "Llamada finalizada.";
@@ -180,8 +165,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
-    public void cambiarSpeaker() {
+    public String cambiarSpeaker() {
         if (encendido && telefonoConectado) {
             return "Cambiado a speaker.";
         } else {
@@ -204,9 +188,7 @@ public class Gestionador implements ClaseA {
             return "No se puede planificar viajes. El radio está apagado.";
         }
     }
-
-    @Override
-    public void llamarUltimoContacto() {
+    public String llamarUltimoContacto() {
         if (encendido && ultimoContactoLlamado != null) {
             enLlamada = true;
             return "Llamando al último contacto: " + ultimoContactoLlamado.getNombre();
