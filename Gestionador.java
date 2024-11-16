@@ -13,7 +13,6 @@ public class Gestionador implements ClaseA {
     private boolean enLlamada = false;
     private boolean telefonoConectado = false;
 
-    @Override
     public void encender() {
         if (!encendido) {
             encendido = true;
@@ -23,7 +22,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void apagar() {
         if (encendido) {
             encendido = false;
@@ -35,7 +33,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void subirVolumen() {
         if (encendido && volumen < 100) {
             volumen++;
@@ -47,7 +44,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void bajarVolumen() {
         if (encendido && volumen > 0) {
             volumen--;
@@ -59,7 +55,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void cambiarAMFM() {
         if (encendido) {
             modo = modo.equals("FM") ? "AM" : "FM";
@@ -69,7 +64,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void cambiarEstacion(double incremento) {
         if (encendido) {
             estacionActual += incremento;
@@ -79,7 +73,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void guardarEmisora(double frecuencia) {
         if (encendido) {
             if (emisorasGuardadas.size() < 50) {
@@ -93,7 +86,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public double cargarEmisora(int posicion) {
         if (encendido && posicion >= 1 && posicion <= emisorasGuardadas.size()) {
             double frecuencia = emisorasGuardadas.get(posicion - 1);
@@ -105,7 +98,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void seleccionarListaReproduccion(String lista) {
         if (encendido) {
             System.out.println("Lista de reproducción '" + lista + "' seleccionada.");
@@ -114,7 +107,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void cambiarCancion(String direccion) {
         if (encendido) {
             System.out.println("Canción " + (direccion.equals("adelante") ? "siguiente" : "anterior") + " seleccionada.");
@@ -123,7 +116,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void escucharCancion() {
         if (encendido) {
             System.out.println("Escuchando canción...");
@@ -132,7 +125,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void conectarTelefono(String dispositivo) {
         if (encendido) {
             telefonoConectado = true;
@@ -142,7 +135,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void desconectarTelefono() {
         if (encendido && telefonoConectado) {
             telefonoConectado = false;
@@ -152,7 +144,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void mostrarContactos() {
         if (encendido && telefonoConectado) {
             System.out.println("Mostrando contactos...");
@@ -161,7 +153,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void llamarContacto(String nombre) {
         if (encendido && telefonoConectado) {
             ultimoContactoLlamado = new Contacto(nombre, "1234567890");
@@ -172,7 +164,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void finalizarLlamada() {
         if (encendido && enLlamada) {
             enLlamada = false;
@@ -182,7 +174,7 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
+
     public void cambiarSpeaker() {
         if (encendido && telefonoConectado) {
             System.out.println("Cambiado a speaker.");
@@ -191,7 +183,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public String cambiar(boolean sonido) {
         if (encendido) {
             return "Sonido " + (sonido ? "encendido" : "apagado");
@@ -200,7 +191,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public String planificarViajes(Date inicio, Date fin, String lugarInicio, String lugarFinal) {
         if (encendido) {
             return "Viaje planificado desde " + lugarInicio + " hasta " + lugarFinal + " desde el " + inicio.toString() + " hasta el " + fin.toString();
@@ -209,7 +199,6 @@ public class Gestionador implements ClaseA {
         }
     }
 
-    @Override
     public void llamarUltimoContacto() {
         if (encendido && ultimoContactoLlamado != null) {
             enLlamada = true;
