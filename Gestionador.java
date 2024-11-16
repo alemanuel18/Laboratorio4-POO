@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class Gestionador implements ClaseA {
     private boolean encendido = false;
@@ -131,19 +132,39 @@ public class Gestionador implements ClaseA {
 
     @Override
     public String seleccionarListaReproduccion(String lista) {
-        if (encendido) {
-            return "Lista de reproducción '" + lista + "' seleccionada.";
-        } else {
-            return "Radio está apagado.";
+        if (!encendido) {
+            return "El radio está apagado. Encienda el radio para seleccionar una lista de reproducción.";
         }
+    
+        // Listas preconfiguradas
+        HashMap<String, List<Cancion>> listasPreconfiguradas = new HashMap<>();
+        listasPreconfiguradas.put("Rock", List.of(
+            new Cancion("Two Faced", 181, "Linkin Park", "Rock"),
+            new Cancion("BURN IR DOWN", 209, "Linkin Park", "Rock")
+        ));
+        listasPreconfiguradas.put("Electronica", List.of(
+            new Cancion("Vice", 198, "Maiki Vanics", "Electónica"),
+            new Cancion("The Right Song", 207, "Tiesto, Oliver Heldens", "Electónica")
+        ));
+    
+        if (!listasPreconfiguradas.containsKey(lista)) {
+            return "Lista de reproducción no encontrada. Pruebe con Rock o Electrónica.";
+        }
+    
+        // Cargar lista seleccionada
+        playlistActual.clear();
+        for (Cancion cancion : listasPreconfiguradas.get(lista)) {
+            playlistActual.put(String.valueOf(cancion.getId()), cancion);
+        }
+        return "Lista de reproducción '" + lista + "' seleccionada exitosamente.";
     }
-
+    
     @Override
     public String cambiarCancion(String direccion) {
         if (encendido) {
             return "Canción " + (direccion.equals("adelante") ? "siguiente" : "anterior") + " seleccionada.";
         } else {
-            return "Radio está apagado.";
+            return "El Radio está apagado.";
         }
     }
 
