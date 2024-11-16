@@ -91,20 +91,24 @@ public class Gestionador implements ClaseA {
         return "Estación cambiada a " + estacionActual + " " + modo;
     }
     
-
     @Override
     public String guardarEmisora(double frecuencia) {
-        if (encendido) {
-            if (emisorasGuardadas.size() < 50) {
-                emisorasGuardadas.add(frecuencia);
-                return "Emisora " + frecuencia + " guardada en posición " + emisorasGuardadas.size();
-            } else {
-                return "Ya se ha alcanzado el límite de 50 emisoras guardadas.";
-            }
-        } else {
-            return "No se puede guardar la emisora. El radio está apagado.";
+        if (!encendido) {
+            return "El radio está apagado. Encienda el radio para guardar una emisora.";
         }
+
+        if (emisorasGuardadas.size() >= 50) {
+            return "No se puede guardar más emisoras. El límite de 50 emisoras ha sido alcanzado.";
+        }
+ 
+        if (emisorasGuardadas.contains(frecuencia)) {
+            return "La emisora " + frecuencia + " ya está guardada.";
+        }
+
+        emisorasGuardadas.add(frecuencia);
+        return "Emisora " + frecuencia + " guardada exitosamente.";
     }
+    
 
     @Override
     public double cargarEmisora(int posicion) {
