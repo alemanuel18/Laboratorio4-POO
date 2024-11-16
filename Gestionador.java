@@ -159,23 +159,57 @@ public class Gestionador implements ClaseA {
         return "Lista de reproducción '" + lista + "' seleccionada exitosamente.";
     }
     
+    private int indiceCancionActual = 0;
     @Override
     public String cambiarCancion(String direccion) {
-        if (encendido) {
-            return "Canción " + (direccion.equals("adelante") ? "siguiente" : "anterior") + " seleccionada.";
-        } else {
-            return "El Radio está apagado.";
+        if (!encendido) {
+            return "El radio está apagado. Encienda el radio para cambiar de canción.";
         }
+    
+        if (playlistActual.isEmpty()) {
+            return "No hay canciones en la lista de reproducción que has escogido.";
+        }
+        List<String> nombresCanciones = new ArrayList<>(playlistActual.keySet());
+    
+        if (direccion.equalsIgnoreCase("siguiente")) {
+            if (indiceCancionActual < nombresCanciones.size() - 1) {
+                indiceCancionActual++;
+            } else {
+                return "¡Ya estás en la última canción!";
+            }
+        } else if (direccion.equalsIgnoreCase("atras")) {
+            if (indiceCancionActual > 0) {
+                indiceCancionActual--;
+            } else {
+                return "¡Estás en la primera canción!";
+            }
+        } else {
+            return "¡UPS! Recuerda usar siguiente o atras.";
+        }
+   
+        Cancion cancionActual = playlistActual.get(nombresCanciones.get(indiceCancionActual));
+        return "Canción actual: " + cancionActual.getNombre() + "\n" +
+               "Duración: " + cancionActual.getDuracion() + "s\n" +
+               "Autor: " + cancionActual.getAutor() + "\n" +
+               "Género: " + cancionActual.getGenero();
     }
+    
 
     @Override
     public String escucharCancion() {
-        if (encendido) {
-            return "Escuchando canción...";
-        } else {
-            return "Radio está apagado.";
+        if (!encendido) {
+            return "El radio está apagado. ¡Enciendalo para escuchar tus canciones!";
         }
+        if (playlistActual.isEmpty()) {
+            return "¡Oh no! ¡No hay canciones en la lista de reproducción actual!";
+        }
+        List<String> nombresCanciones = new ArrayList<>(playlistActual.keySet());
+        Cancion cancionActual = playlistActual.get(nombresCanciones.get(indiceCancionActual));
+        return "Reproduciendo: " + cancionActual.getNombre() + " - " +
+               cancionActual.getAutor() + " (" + cancionActual.getDuracion() + " segundos, " +
+               cancionActual.getGenero() + ")";
     }
+    
 
     @Override
     public String conectarTelefono(String dispositivo) {
