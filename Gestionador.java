@@ -14,82 +14,82 @@ public class Gestionador implements ClaseA {
     private boolean telefonoConectado = false;
 
     @Override
-    public void encender() {
+    public String encender() {
         if (!encendido) {
             encendido = true;
-            System.out.println("Radio encendido.");
+            return "Radio encendido.";
         } else {
-            System.out.println("El radio ya está encendido.");
+            return "El radio ya está encendido.";
         }
     }
 
     @Override
-    public void apagar() {
+    public String apagar() {
         if (encendido) {
             encendido = false;
             enLlamada = false;
             telefonoConectado = false;
-            System.out.println("Radio apagado.");
+            return "Radio apagado.";
         } else {
-            System.out.println("El radio ya está apagado.");
+            return "El radio ya está apagado.";
         }
     }
 
     @Override
-    public void subirVolumen() {
+    public String subirVolumen() {
         if (encendido && volumen < 100) {
             volumen++;
-            System.out.println("Volumen aumentado a: " + volumen);
+            return "Volumen aumentado a: " + volumen;
         } else if (!encendido) {
-            System.out.println("No se puede subir el volumen. El radio está apagado.");
+            return "No se puede subir el volumen. El radio está apagado.";
         } else {
-            System.out.println("Volumen máximo alcanzado.");
+            return "Volumen máximo alcanzado.";
         }
     }
 
     @Override
-    public void bajarVolumen() {
+    public String bajarVolumen() {
         if (encendido && volumen > 0) {
             volumen--;
-            System.out.println("Volumen disminuido a: " + volumen);
+            return "Volumen disminuido a: " + volumen;
         } else if (!encendido) {
-            System.out.println("No se puede bajar el volumen. El radio está apagado.");
+            return "No se puede bajar el volumen. El radio está apagado.";
         } else {
-            System.out.println("Volumen mínimo alcanzado.");
+            return "Volumen mínimo alcanzado.";
         }
     }
 
     @Override
-    public void cambiarAMFM() {
+    public String cambiarAMFM() {
         if (encendido) {
             modo = modo.equals("FM") ? "AM" : "FM";
-            System.out.println("Modo cambiado a " + modo);
+            return "Modo cambiado a " + modo;
         } else {
-            System.out.println("No se puede cambiar de AM a FM. El radio está apagado.");
+            return "No se puede cambiar de AM a FM. El radio está apagado.";
         }
     }
 
     @Override
-    public void cambiarEstacion(double incremento) {
+    public String cambiarEstacion(double incremento) {
         if (encendido) {
             estacionActual += incremento;
-            System.out.println("Estación cambiada a " + estacionActual + " " + modo);
+            return "Estación cambiada a " + estacionActual + " " + modo;
         } else {
-            System.out.println("No se puede cambiar la estación. El radio está apagado.");
+            return "No se puede cambiar la estación. El radio está apagado.";
         }
     }
 
     @Override
-    public void guardarEmisora(double frecuencia) {
+    public String guardarEmisora(double frecuencia) {
         if (encendido) {
             if (emisorasGuardadas.size() < 50) {
                 emisorasGuardadas.add(frecuencia);
-                System.out.println("Emisora " + frecuencia + " guardada en posición " + emisorasGuardadas.size());
+                return "Emisora " + frecuencia + " guardada en posición " + emisorasGuardadas.size();
             } else {
-                System.out.println("Ya se ha alcanzado el límite de 50 emisoras guardadas.");
+                return "Ya se ha alcanzado el límite de 50 emisoras guardadas.";
             }
         } else {
-            System.out.println("No se puede guardar la emisora. El radio está apagado.");
+            return "No se puede guardar la emisora. El radio está apagado.";
         }
     }
 
@@ -97,97 +97,95 @@ public class Gestionador implements ClaseA {
     public double cargarEmisora(int posicion) {
         if (encendido && posicion >= 1 && posicion <= emisorasGuardadas.size()) {
             double frecuencia = emisorasGuardadas.get(posicion - 1);
-            System.out.println("Cargando emisora en la posición " + posicion + ": " + frecuencia);
             return frecuencia;
         } else {
-            System.out.println("No se puede cargar la emisora. El radio está apagado o la posición es inválida.");
             return -1;
         }
     }
 
     @Override
-    public void seleccionarListaReproduccion(String lista) {
+    public String seleccionarListaReproduccion(String lista) {
         if (encendido) {
-            System.out.println("Lista de reproducción '" + lista + "' seleccionada.");
+            return "Lista de reproducción '" + lista + "' seleccionada.";
         } else {
-            System.out.println("Radio está apagado.");
+            return "Radio está apagado.";
         }
     }
 
     @Override
-    public void cambiarCancion(String direccion) {
+    public String cambiarCancion(String direccion) {
         if (encendido) {
-            System.out.println("Canción " + (direccion.equals("adelante") ? "siguiente" : "anterior") + " seleccionada.");
+            return "Canción " + (direccion.equals("adelante") ? "siguiente" : "anterior") + " seleccionada.";
         } else {
-            System.out.println("Radio está apagado.");
+            return "Radio está apagado.";
         }
     }
 
     @Override
-    public void escucharCancion() {
+    public String escucharCancion() {
         if (encendido) {
-            System.out.println("Escuchando canción...");
+            return "Escuchando canción...";
         } else {
-            System.out.println("Radio está apagado.");
+            return "Radio está apagado.";
         }
     }
 
     @Override
-    public void conectarTelefono(String dispositivo) {
+    public String conectarTelefono(String dispositivo) {
         if (encendido) {
             telefonoConectado = true;
-            System.out.println("Teléfono " + dispositivo + " conectado.");
+            return "Teléfono " + dispositivo + " conectado.";
         } else {
-            System.out.println("Radio está apagado.");
+            return "Radio está apagado.";
         }
     }
 
     @Override
-    public void desconectarTelefono() {
+    public String desconectarTelefono() {
         if (encendido && telefonoConectado) {
             telefonoConectado = false;
-            System.out.println("Teléfono desconectado.");
+            return "Teléfono desconectado.";
         } else {
-            System.out.println("No hay teléfono para desconectar o el radio está apagado.");
+            return "No hay teléfono para desconectar o el radio está apagado.";
         }
     }
 
     @Override
-    public void mostrarContactos() {
+    public String mostrarContactos() {
         if (encendido && telefonoConectado) {
-            System.out.println("Mostrando contactos...");
+            return "Mostrando contactos...";
         } else {
-            System.out.println("No se pueden mostrar contactos. Asegúrese de que el radio esté encendido y un teléfono esté conectado.");
+            return "No se pueden mostrar contactos. Asegúrese de que el radio esté encendido y un teléfono esté conectado.";
         }
     }
 
     @Override
-    public void llamarContacto(String nombre) {
+    public String llamarContacto(String nombre) {
         if (encendido && telefonoConectado) {
             ultimoContactoLlamado = new Contacto(nombre, "1234567890");
             enLlamada = true;
-            System.out.println("Llamando a " + nombre + "...");
+            return "Llamando a " + nombre + "...";
         } else {
-            System.out.println("No se puede realizar la llamada. Asegúrese de que el radio esté encendido y el teléfono esté conectado.");
+            return "No se puede realizar la llamada. Asegúrese de que el radio esté encendido y el teléfono esté conectado.";
         }
     }
 
     @Override
-    public void finalizarLlamada() {
+    public String finalizarLlamada() {
         if (encendido && enLlamada) {
             enLlamada = false;
-            System.out.println("Llamada finalizada.");
+            return "Llamada finalizada.";
         } else {
-            System.out.println("No hay llamada activa o el radio está apagado.");
+            return "No hay llamada activa o el radio está apagado.";
         }
     }
 
     @Override
-    public void cambiarSpeaker() {
+    public String cambiarSpeaker() {
         if (encendido && telefonoConectado) {
-            System.out.println("Cambiado a speaker.");
+            return "Cambiado a speaker.";
         } else {
-            System.out.println("No se puede cambiar a speaker. Asegúrese de que el radio esté encendido y un teléfono esté conectado.");
+            return "No se puede cambiar a speaker. Asegúrese de que el radio esté encendido y un teléfono esté conectado.";
         }
     }
 
@@ -210,12 +208,12 @@ public class Gestionador implements ClaseA {
     }
 
     @Override
-    public void llamarUltimoContacto() {
+    public String llamarUltimoContacto() {
         if (encendido && ultimoContactoLlamado != null) {
             enLlamada = true;
-            System.out.println("Llamando al último contacto: " + ultimoContactoLlamado.getNombre());
+            return "Llamando al último contacto: " + ultimoContactoLlamado.getNombre();
         } else {
-            System.out.println("No hay último contacto registrado o el radio está apagado.");
+            return "No hay último contacto registrado o el radio está apagado.";
         }
     }
 

@@ -1,24 +1,24 @@
 import java.util.Date;
 
 public interface ClaseA {
-    void encender();
-    void apagar();
-    void subirVolumen();
-    void bajarVolumen();
-    void cambiarAMFM();
-    void cambiarEstacion(double frecuencia);
-    void guardarEmisora(double frecuencia);
+    String encender();
+    String apagar();
+    String subirVolumen();
+    String bajarVolumen();
+    String cambiarAMFM();
+    String cambiarEstacion(double incremento);
+    String guardarEmisora(double frecuencia);
     double cargarEmisora(int posicion);
-    void seleccionarListaReproduccion(String lista);
-    void cambiarCancion(String direccion);
-    void escucharCancion();
-    void conectarTelefono(String dispositivo);
-    void desconectarTelefono();
-    void mostrarContactos();
-    void llamarContacto(String nombre);
-    void finalizarLlamada();
-    void cambiarSpeaker();
+    String seleccionarListaReproduccion(String lista);
+    String cambiarCancion(String direccion);
+    String escucharCancion();
+    String conectarTelefono(String dispositivo);
+    String desconectarTelefono();
+    String mostrarContactos();
+    String llamarContacto(String nombre);
+    String finalizarLlamada();
+    String cambiarSpeaker();
     String cambiar(boolean sonido);
     String planificarViajes(Date inicio, Date fin, String lugarInicio, String lugarFinal);
-    void llamarUltimoContacto();
+    String llamarUltimoContacto();
 }
