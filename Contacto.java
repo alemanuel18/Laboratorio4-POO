@@ -14,8 +14,4 @@ public class Contacto {
     public String getNumero() {
         return numero;
     }
-
-    public void mostrarInformacion() {
-        System.out.println("Contacto: " + nombre + ", Número: " + numero);
-    }
 }
